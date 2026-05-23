@@ -1,0 +1,104 @@
+Microsoft (R) Macro Assembler Version 14.44.35223.0	    04/07/26 19:21:23
+..\AddTwo.asm						     Page 1 - 1
+
+
+				; =========================================================================================
+				; AUTHOR:		ALEJANDRO PANTOJA-ZURITA
+				; COLLEGE:		DELAWARE TECHNICAL COMMUNITY COLLEGE
+				; COURSE:		CIS 130: COMPUTER ORGANIZATION
+				; INSTRUCTOR:	JIN AN
+				; DATE:			MARCH 31, 2026
+				; PROJECT:		ASSEMBLY LAB 3: ASSEMBLY LOOPS
+				; NOTES:		PROGRAM CREATED TO GET FAMILIAR WITH LOOPS IN ASSEMBLY LANGUAGE.
+				; =========================================================================================
+
+
+				.386												; Target CPU (32-bit CPU)
+
+				.model flat,stdcall
+
+				.stack 4096											; Allocates stack space (4096 bytes) for program.
+
+ 00000000			.data												; Variables are declared past this point
+
+ 00000000 00000001		numbers dword 1, 2, 3, 4, 5, 6, 7, 8, 9, 10			; numbers[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] 
+	   00000002
+	   00000003
+	   00000004
+	   00000005
+	   00000006
+	   00000007
+	   00000008
+	   00000009
+	   0000000A
+ 00000028 00000000		sum dword 0											; variable to store the sum of the values in 'numbers' array. sum = 0.
+				ExitProcess proto,dwExitCode:dword 
+
+ 00000000			.code												; Instructions go past this point
+
+ 00000000			main proc											; Main procedure (function) starts here.
+
+ 00000000  B9 0000000A			mov ecx, 10										; Initialize ecx (Extended Counter Register) as the counter for a loop with a value of 5. (Value decrements each loop till it gets to 0) ECX = 10
+ 00000005  BE 00000000			mov esi, 0										; Initialize esi (Extended Source Index) to keep track of indexing while inside the loop. ESI = 0
+ 0000000A  B8 00000000			mov	eax, 0										; Initialize eax (Extended Acumulator Register) with the value of 0 to keep track of the sum of. EAX = 0
+					
+																	; Loop below is similar to -> (for int i = 0; i < 10; i++)
+ 0000000F				L1:												; Loop created to get sum of array. L1 acts as the label to let program know where loop starts.
+
+						;add eax, numbers[esi*4]					; Add the value stored in numbers[index value] to eax. (eax = eax + numbers[index])
+ 0000000F  03 04 B5				add eax, [numbers + esi * TYPE numbers]		; Add the value stored in numbers[index value] to eax. (eax = eax + numbers[index])
+	   00000000 R
+ 00000016  46					inc esi										; Increment the value of esi to cycle through array. (esi++)
+
+ 00000017  E2 F6			loop L1											; Let program know to repeat loop again until ecx = 0. ecx automatically decrements each loop.
+
+ 00000019  A3 00000028 R		mov sum, eax									; Move the value stored inside eax to the sum in memory. sum = eax (sum of array.)
+
+					invoke ExitProcess,0							; Tell Operating System to terminate the program.
+
+ 00000025			main endp											; Main procedure (function) ends here.
+
+				end main											; Code for "linker", lets program know the entry point is the main procedure (function)
+Microsoft (R) Macro Assembler Version 14.44.35223.0	    04/07/26 19:21:23
+..\AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000002C DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000025 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000025 Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 0000000F _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+numbers  . . . . . . . . . . . .	DWord	 00000000 _DATA	
+sum  . . . . . . . . . . . . . .	DWord	 00000028 _DATA	
+
+	   0 Warnings
+	   0 Errors
