@@ -1,0 +1,142 @@
+Microsoft (R) Macro Assembler Version 14.44.35223.0	    04/12/26 19:03:27
+..\AddTwo.asm						     Page 1 - 1
+
+
+				; =========================================================================================
+				; AUTHOR:		ALEJANDRO PANTOJA-ZURITA
+				; COLLEGE:		DELAWARE TECHNICAL COMMUNITY COLLEGE
+				; COURSE:		CIS 130: COMPUTER ORGANIZATION
+				; INSTRUCTOR:	JIN AN
+				; DATE:			APRIL 12, 2026
+				; PROJECT:		LAB 5: ASSEMBLY CONDITIONAL PROCESSING
+				; NOTES:		PROGRAM CREATED TO TEST COMPETENCE WITH PROCEDURES, COMPARISONS, BRANCHING
+				;				AND ARRAY INDEXING IN ASSEMBLY.
+				; =========================================================================================
+
+
+				.386												; Target CPU (32-bit CPU)
+
+				.model flat,stdcall
+
+				.stack 4096											; Allocates stack space (4096 bytes) for program.
+
+ 00000000			.data												; Variables are declared past this point
+
+ 00000000 00000005			numbers DWORD 5, -2, 12, -7, 9, -1, 4			; Variable used to store an array of elements.
+	   FFFFFFFE
+	   0000000C
+	   FFFFFFF9
+	   00000009
+	   FFFFFFFF
+	   00000004
+ 0000001C 00000007			arraySize DWORD LENGTHOF numbers 				; Variable used to store the length of the numbers array.
+ 00000020 00000000			positiveSum DWORD ?								; Variable used to store the sum of postive values in number array.
+
+				ExitProcess proto,dwExitCode:dword 
+
+ 00000000			.code												; Instructions go past this point
+
+ 00000000			main proc											; Main procedure (function) starts here.
+
+ 00000000  8B 0D 0000001C R		mov ecx, arraySize								; (used in sumIfPositive procedure) Initialize ecx as the counter for a loop with a value of the array length. ECX = 7
+ 00000006  BE 00000000 R		mov esi, OFFSET numbers							; (used in sumIfPositive procedure) Initialize esi with the value of memory address for numbers array. EDX = numbers array address
+					
+ 0000000B  E8 0000000C			call sumIfPositive								; call sumIfPositive procedure (function).
+
+ 00000010  A3 00000020 R		mov positiveSum, eax							; Move the value stored inside eax to the positiveSUm variable in memory. postiveSum = eax
+
+					invoke ExitProcess,0							; Tell Operating System to terminate the program.
+
+ 0000001C			main endp											; Main procedure (function) ends here.
+
+
+
+
+
+
+
+				; --------------------------------------------------------------------------------------------------------------------------------------------------
+ 0000001C			sumIfPositive proc									; sumIfPositive procedure (function) starts here.
+				;
+				; Calculates the sum of the positive elements in an array. (32 bit integer - 4 bytes per element is hardcoded into loop used to calculate sum)
+				; Recieves: ECX (number of elements), ESI (array base address)
+				; Returns: EAX =  # of warm days.
+				; Requires: ECX & ESI to be initialized before procedure is called to function properly.
+				; --------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 0000001C  B8 00000000		mov	eax, 0											; Initialize eax with the value of 0 to keep track of the total number of warm days. EAX = 0
+ 00000021  BB 00000000		mov ebx, 0											; Initialize ebx with the value of 0 to increment through the array while inside the loop. EBX = 0
+
+ 00000026			L1:													; Loop created to get sum of array. L1 acts as the label to let program know where loop starts.
+					
+ 00000026  8B 3C 9E			mov edi, [esi + ebx * 4]						; Add the value stored in numbers[index value] to edi. (edi = eax + numbers[index])
+ 00000029  83 FF 00			cmp edi, 0										; Compare the value stored in edx to the value in edi. if (EDI (array value) == EDX (60))
+
+ 0000002C  7E 02			jle lessThanOrEqualTo							; Jump to "lessThanOrEqualTo" if EDI < EDX.
+
+ 0000002E  03 C7			add eax, edi									; Increment the value of eax whenever value of EDI > EDX.
+
+ 00000030			lessThanOrEqualTo:									; Jump to this point in code if EDI < EDX.
+
+ 00000030  43				inc ebx											; Increment the value of esi to cycle through array. (esi++)
+
+ 00000031  E2 F3		loop L1												; Let program know to repeat loop again until ecx = 0. ecx automatically decrements each loop.
+
+ 00000033  C3				ret												; return to main procedure (function).
+
+ 00000034			sumIfPositive endp									; sumArray procedure (function) ends here.
+
+
+
+
+
+
+
+
+				end main											; Code for "linker", lets program know the entry point is the main procedure (function)
+Microsoft (R) Macro Assembler Version 14.44.35223.0	    04/12/26 19:03:27
+..\AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000024 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000034 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001C Public STDCALL
+sumIfPositive  . . . . . . . . .	P Near	 0000001C _TEXT	Length= 00000018 Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 00000026 _TEXT	
+  lessThanOrEqualTo  . . . . . .	L Near	 00000030 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+arraySize  . . . . . . . . . . .	DWord	 0000001C _DATA	
+numbers  . . . . . . . . . . . .	DWord	 00000000 _DATA	
+positiveSum  . . . . . . . . . .	DWord	 00000020 _DATA	
+
+	   0 Warnings
+	   0 Errors
