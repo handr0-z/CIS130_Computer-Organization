@@ -1,0 +1,4 @@
+D:\School\DTCC_Computer Science\CIS 130_Computer Organization\CIS130_Lab_01\Practice Project\Project\Debug\Project.exe
+D:\School\DTCC_Computer Science\CIS 130_Computer Organization\CIS130_Lab_02\Practice Project\Project\Debug\Project.exe
+D:\School\DTCC_Computer Science\CIS 130_Computer Organization\CIS130_Lab_03\Practice Project\Project\Debug\Project.exe
+D:\School\DTCC_Computer Science\CIS 130_Computer Organization\CIS130_Assignment_05\Practice Project\Project\Debug\Project.exe
